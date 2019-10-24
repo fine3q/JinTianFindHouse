@@ -2,6 +2,7 @@ package cn.jintian.dao.impl;
 
 import cn.jintian.dao.BaseDao;
 import cn.jintian.dao.ICollectHouseDao;
+import cn.jintian.pojo.Users;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -54,11 +55,11 @@ public class CollectHouseDaoImpl implements ICollectHouseDao{
         int houseType = -1;
         String sql = "select h_liketype from houseinfo where h_house_id = ?";
         try {
+            preparedStatement = BaseDao.getConn().prepareStatement(sql);
             preparedStatement.setInt(1,houseId);
             resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()){
-                houseType = resultSet.getInt("h_liketype");
-            }
+            resultSet.next();
+            houseType = resultSet.getInt("h_liketype");
         } catch (SQLException e) {
             e.printStackTrace();
         }

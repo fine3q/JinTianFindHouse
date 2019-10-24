@@ -60,7 +60,7 @@ public class IndexOldHouseDaoImpl implements IIndexOldHourseDao,Runnable{
 				Old_H oldHouseImg = new Old_H();
 				oldHouseImg.setOld_h_id(rs.getString("old_h_id"));
 				oldHouseImg.setOld_h_img(rs.getString("old_h_img"));
-				System.out.println(oldHouseImg.getOld_h_img() + "222222222");
+				//System.out.println(oldHouseImg.getOld_h_img() + "222222222");
 				houseImg.add(oldHouseImg);
 			}
 		} catch (SQLException e) {

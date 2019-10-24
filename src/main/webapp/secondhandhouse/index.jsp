@@ -1110,7 +1110,7 @@
                         "<img class=\"lj-lazy\" src=\""+json[i].old_h_img+"\""+
                             //hahaha
                         "data-original=\"#\""+
-                        "alt=\"----\" title=\""+json[i].communityName+">"+
+                        "<img class=\"lj-lazy\" src=\""+json[i].old_h_img+"\""+
                         "<img class='vr_logo' src='" +json[i].old_h_img+ " '> "+
                         "</a>"+
                         "<div class=\"info clear\">"+
@@ -1171,6 +1171,18 @@
             }
         })
     }
+    $(function () {
+        $(".sellListContent").on("click",".follow-text",function () {
+            $.ajax({
+                url:"FollowHouseServlet?old_h_id=" + ($(this).attr("id")),
+                type:"post",
+                success:function(data){
+                    alert("收藏成功");
+                    //alert($(this).attr("id") + "用户1111111");
+                }
+            });
+        })
+    })
     $(function () {
         $("#page1").click(function(){
             index = 1;
