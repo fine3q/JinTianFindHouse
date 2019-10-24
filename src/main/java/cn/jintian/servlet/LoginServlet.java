@@ -7,8 +7,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import cn.jintian.pojo.ResultInfo;
 import cn.jintian.pojo.Users;
 import cn.jintian.service.impl.LoginServiceImpl;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class LoginServlet extends HttpServlet {
 	public void doPost(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
@@ -23,28 +26,15 @@ public class LoginServlet extends HttpServlet {
 		System.out.println(pwd);
 		LoginServiceImpl lsi = new LoginServiceImpl();
 		Users user = lsi.login(phone, pwd);
+		ResultInfo info = new ResultInfo();
 		if (user != null) {
-			HttpSession session = request.getSession();
 			request.getSession().setAttribute("user", user);
-			renderData(response, "登录成功");
-			//request.getRequestDispatcher("Login/index.jsp").forward(request, response);
-		}else if(user == null){
-			renderData(response, "用户名或密码错误");
+			info.setFlag(true);
+		}else{
+			info.setFlag(false);
+			info.setErrorMsg("用户名或密码错误");
 		}
-		/*String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        Users user = new Users();
-		user.setU_phonenumber(username);
-		user.setU_pwd(password);
-        LoginServiceImpl lsi = new LoginServiceImpl();
-        Users us = lsi.login(username, password);
-        if (us != null){
-        	 request.getSession().setAttribute("user", us);
-        	 request.getRequestDispatcher("Login/index.jsp").forward(request, response);
-        }else {
-        	request.setAttribute("asd", "用户名或密码错误");
-        	request.getRequestDispatcher("index.jsp").forward(request, response);
-        }*/
+		writeValue(info,response);
        
     }
 	protected void renderData(HttpServletResponse response, String data){
@@ -54,5 +44,23 @@ public class LoginServlet extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	/**
+	 * 传入对象序列化为json,并写回客户端
+	 * @param obj
+	 */
+	public void writeValue(Object obj, HttpServletResponse response) throws IOException {
+		ObjectMapper mapper = new ObjectMapper();
+		response.setContentType("application/json;charset=utf-8");
+		mapper.writeValue(response.getOutputStream(),obj);
+	}
+
+	/**
+	 * 将传入的对象序列化为json,返回
+	 * @return
+	 */
+	public String writeValueAsString(Object obj) throws JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		return mapper.writeValueAsString(obj);
 	}
  }

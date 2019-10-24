@@ -10,8 +10,11 @@ public class FollowHouseServiceImpl implements IFollowHouseService {
 	public OldHousePage getOldHourse(int index, int itemsPerPage, String userId) {
 		OldHousePage ohp = new OldHousePage();
 		FollowHouseDaoImpl fgdi = new FollowHouseDaoImpl();
+		//设置总记录数
 		ohp.setHourseTotal(fgdi.getOldHourseCount(userId));
+		//设置每页显示条数
 		ohp.setItemsPerPage(itemsPerPage);
+		//设置当前页码
 		if (index > ohp.getTotalPages()) {
 			ohp.setIndex(ohp.getTotalPages());
 		}else if (index < 1) {
