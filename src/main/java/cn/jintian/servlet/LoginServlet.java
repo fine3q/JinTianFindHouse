@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import cn.jintian.pojo.ResultInfo;
 import cn.jintian.pojo.Users;
 import cn.jintian.service.impl.LoginServiceImpl;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class LoginServlet extends HttpServlet {
@@ -29,18 +30,11 @@ public class LoginServlet extends HttpServlet {
 		if (user != null) {
 			request.getSession().setAttribute("user", user);
 			info.setFlag(true);
-			//renderData(response, "登录成功");
-			//request.getRequestDispatcher("Login/index.jsp").forward(request, response);
 		}else{
 			info.setFlag(false);
 			info.setErrorMsg("用户名或密码错误");
-			//renderData(response, "用户名或密码错误");
 		}
-		ObjectMapper mapper = new ObjectMapper();
-		String json = mapper.writeValueAsString(info);
-		System.out.println(json);
-		response.setContentType("application/json;charset=utf-8");
-		response.getWriter().write(json);
+		writeValue(info,response);
        
     }
 	protected void renderData(HttpServletResponse response, String data){
@@ -50,5 +44,23 @@ public class LoginServlet extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	/**
+	 * 传入对象序列化为json,并写回客户端
+	 * @param obj
+	 */
+	public void writeValue(Object obj, HttpServletResponse response) throws IOException {
+		ObjectMapper mapper = new ObjectMapper();
+		response.setContentType("application/json;charset=utf-8");
+		mapper.writeValue(response.getOutputStream(),obj);
+	}
+
+	/**
+	 * 将传入的对象序列化为json,返回
+	 * @return
+	 */
+	public String writeValueAsString(Object obj) throws JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		return mapper.writeValueAsString(obj);
 	}
  }

@@ -207,7 +207,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                         
                         	<!-- 用户已登录 -->
                         	<c:if test="${!empty user }">
-                        		<a href="FollowHouseServlet" rel="nofollow"><span>${user.u_phonenumber}</span></a>
+                        		<a href="favorHouse/index.jsp" rel="nofollow"><span>${user.u_phonenumber}</span></a>
 							<span class="welcome"><a class="reg" href="LoginoutServlet" target="_self">退出</a></span>
                         	</c:if>
 							

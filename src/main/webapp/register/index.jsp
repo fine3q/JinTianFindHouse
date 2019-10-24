@@ -213,16 +213,16 @@
             $(".lang-btn").click(function () {
                 //alert("可以注册了");
                 $.post("RegisteredServlet",$("#regform").serialize(),function (data) {
-                    /*if (data.flag){
+                    if (data.flag){
                         alert("注册成功,即将跳转到登录页面");
                         location.href="../JinTianFindHouse/Login/index.jsp";
                     }else{
                         alert(data.errorMsg);
-                    }*/
-                    alert(data);
+                    }
+                    /*alert(data);
                     if (data == '注册成功,即将跳转到登录页面'){
                         location.href="../JinTianFindHouse/Login/index.jsp";
-                    }
+                    }*/
                 })
             })
         })

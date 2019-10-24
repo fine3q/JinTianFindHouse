@@ -20,8 +20,154 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <link rel="stylesheet" href="favorHouse/css/main.css">
     <!--[if lt IE 9]>
     <script type="text/javascript" src="favorHouse/js/html5.js"></script><![endif]-->
+    <script type="text/javascript" src="favorHouse/js/jquery.js"></script>
+    <script>
+        $(function () {
+            /*var search = location.search;
+            var cid = search.split("=")[1];*/
+            //发送ajax请求,请求分页信息json对象
+            load();
+        })
+        function load(index) {
+            $.get("FollowHouseServlet",{index:index},function (pb) {
+                //解析json对象,展示到页面上
+                //1.分页工具条数据展示
+                //1.1展示总页码和总记录数
+                $("#totalPage").html(pb.totalPages);
+                $("#totalCount").html(pb.hourseTotal);
+                //1.2展示分页页码
+                var lis = "";
+                var firstPage = '<a href="javascript:load(1)">首页</a>';
+                var before = pb.index - 1;
+                if (before < 1){
+                    before = 1;
+                }
+                var beforePage = '<a href="javascript:load('+before+')">上一页</a>';
+                var next = pb.index + 1;
+                var nextPage = '<a href="javascript:load('+next+')">下一页</a>';
+                var lastPage = '<a href="javascript:load('+pb.totalPages+')">尾页</a>';
+                lis += firstPage;
+                lis += beforePage;
+
+                /*
+                * 1.一共展示5个页码,能达到前2后2的效果
+                * 2.如果前边不够2个,后边补齐5个
+                * 3.如果后边不够2个,前边补齐5个
+                * */
+                //定义开始的位置begin,结束的位置end
+                var begin;
+                var end;
+                //1.要显示5个页码
+                if (pb.totalPages < 5){
+                    //不够5页
+                    begin = 1;
+                    end = pb.totalPages;
+                }else{
+                    //总页码超过5页
+                    begin = pb.index -2;
+                    end = pb.index + 2;
+                    //2.如果前边不够2个,后边补齐5个
+                    if (begin < 1){
+                        begin = 1;
+                        end = begin + 4;
+                    }
+                    //3.如果后边不足2个,则前边补全
+                    if (end > pb.index){
+                        end = pb.index;
+                        begin = end - 4;
+                    }
+                }
+                for (var i = begin; i <= end; i++) {
+                    //判断是否是当前页码
+                    var li;
+                    if (pb.index == i){
+                        li = '<a style="background: #009de8;color: white" href="javascript:load('+i+')">' + i + '</a>';
+                    }else {
+                        //创建页码的a标签
+                        li = '<a href="javascript:load('+i+')">' + i + '</a>';
+                    }
+                    lis += li;
+                }
 
 
+                /*for (var i = 1; i <= pb.totalPages; i++) {
+                    //判断是否是当前页码
+                    var li;
+                    if (pb.index == i){
+                        li = '<a style="background: #009de8;color: white" href="javascript:load('+i+')">' + i + '</a>';
+                    }else {
+                        //创建页码的a标签
+                        li = '<a href="javascript:load('+i+')">' + i + '</a>';
+                    }
+                    lis += li;
+                }*/
+                lis += nextPage;
+                lis += lastPage;
+                $("#xglpage").html(lis);
+                //1.2展示分页详细情况
+                //2.列表数据展示
+                /*
+                *
+                * */
+                var h_lis = "";
+                for (var i = 0; i < pb.hourse.length; i++) {
+                    var h = pb.hourse[i];
+                    var li = '<li>\n' +
+                        '                        <div class="list VIEWDATA">\n' +
+                        '                            <div class="pic-panel">\n' +
+                        '                                <a target="_blank" href="#" class="CLICKDATA">\n' +
+                        '                                <img src="'+h.old_h_img + '">\n' +
+                        '                                </a>\n' +
+                        '                            </div>\n' +
+                        '                            <div class="info-panel">\n' +
+                        '                                <h2>\n' +
+                        '                                    <a target="_blank" href="" class="CLICKDATA">\n' +
+                        '                                        '+h.old_h_show+'\n' +
+                        '                                    </a>\n' +
+                        '                                </h2>\n' +
+                        '                                <div class="col-1">\n' +
+                        '                                    <div class="where">\n' +
+                        '                                        <a href="#" target="_blank">\n' +
+                        '                                            <span class="region">'+h.communityName+' </span>\n' +
+                        '                                        </a>\n' +
+                        '                                        <span class="zone">\n' +
+                        '                          <span></span>\n' +
+                        '                        </span>\n' +
+                        '                                        <span class="meters">'+h.old_h_metre+'平米</span>\n' +
+                        '                                        <span></span>\n' +
+                        '                                    </div>\n' +
+                        '                                    <div class="other">\n' +
+                        '                                        <div class="con">\n' +
+                        '                                            <a href="https://tj.ke.com/ershoufang/zhongbeizhen/">二手房</a>\n' +
+                        '                                            <span>/</span>\n' +
+                        '\n' +
+                        '                                        </div>\n' +
+                        '                                    </div>\n' +
+                        '\n' +
+                        '                                </div>\n' +
+                        '                                <div class="col-3">\n' +
+                        '\n' +
+                        '                                    <div class="price">\n' +
+                        '                                        <span class="num">'+h.old_h_price+'</span>万\n' +
+                        '                                    </div>\n' +
+                        '                                    <div class="price-pre"></div>\n' +
+                        '\n' +
+                        '                                    <div class="price">\n' +
+                        '\n' +
+                        '                                    </div>\n' +
+                        '\n' +
+                        '                                </div>\n' +
+                        '                            </div>\n' +
+                        '                        </div>\n' +
+                        '                        <a class="del-fav actDelFollow CLICKDATA">取消关注</a>\n' +
+                        '                    </li>'
+                    h_lis += li;
+                }
+                $("#itempage").html(h_lis);
+
+            })
+        }
+    </script>
 </head>
 <body>
 <header class="lianjia-header">
@@ -76,23 +222,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         </ul>
     </div>
     <div class="main-right fr" id="allList">
-        <div class="title" id="showTotal">共 <span>${oldHoursePage.hourseTotal }</span>套 关注房源</div>
+        <div class="title" id="showTotal">共 <span id="totalCount"></span>套 关注房源</div>
         <div class="tab"><span class="actTap hover selected" tap-target="#ershoufang">二手房</span><span class="actTap"
                                                                                                       tap-target="#xinfang">新房</span><span
                 class="actTap" tap-target="#zufang">租房</span></div>
         <script type="text/template" id="allListTemplate">      </script>
 
-        <ul class="list-bot">
-        	<c:if test="${!empty oldHoursePage.hourse }">
-        		<c:forEach items="${oldHoursePage.hourse }" var="h">
+        <ul class="list-bot" id="itempage">
+        	<%--<c:if test="${!empty oldHoursePage.hourse }">
+        		<c:forEach items="${oldHoursePage.hourse }" var="h">--%>
 
-
-                <li>
-                    <div class="list VIEWDATA" data-view-evtid="12897" data-view-event="ModuleExpo"
-                         data-action="source_type='PC我关注的二手房曝光'&click_position="
-                    ">
+                <%--<li>
+                    <div class="list VIEWDATA">
                     <div class="pic-panel">
-
                         <a target="_blank" href="#" class="CLICKDATA" data-click-evtid="12892"
                            data-click-event="WebClick"
                            data-action="source_type='PC我关注的二手房点击'&element_index='图片'&click_position="">
@@ -143,9 +285,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     </div>
     <a class="del-fav actDelFollow CLICKDATA" data-click-evtid="12893" data-click-event="WebClick"
        data-action="source_type='PC我关注的二手房取关点击'&click_position="" act-data="id="">取消关注</a>
-    </li>
-    </c:forEach>
-        	</c:if>
+    </li>--%>
+    <%--</c:forEach>
+        	</c:if>--%>
             
 
 
@@ -156,8 +298,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <div class="initial-logo"></div>
         <p>还没有关注任何房源哦</p>
     </div> -->
-
     <div class="page"  style="margin-top: 20px;">
+        <div id="xglpage" class="page-box house-lst-page-box" node-type="pageList" node-val="totalPage=2&amp;curPage=1">
+            <%--<a href="FollowHouseServlet?index=1">首页</a>
+            <a href="FollowHouseServlet?index=${oldHoursePage.index - 1}">上一页</a>
+            <a href="FollowHouseServlet?index=${oldHoursePage.index + 1 }">下一页</a>
+            <a href="FollowHouseServlet?index=${oldHoursePage.totalPages }">尾页</a>--%>
+
+        </div>
+        <br>
+        <%--<span>当前页 <span style="font-weight:bold;">2</span></span>--%>
+        <span>总共 :<span id="totalPage" style="font-weight:bold;"></span> 页</span>
+    </div>
+    <%--<div class="page"  style="margin-top: 20px;">
         <div class="page-box house-lst-page-box" node-type="pageList" node-val="totalPage=2&amp;curPage=1">
 			<a href="FollowHouseServlet?index=1">首页</a>
   			<a href="FollowHouseServlet?index=${oldHoursePage.index - 1}">上一页</a>
@@ -165,12 +318,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			<a href="FollowHouseServlet?index=${oldHoursePage.totalPages }">尾页</a>
   			<span>当前页 ${oldHoursePage.index }</span>
   			<span>总共 ${oldHoursePage.totalPages }</span>
-
-           
-
-
         </div>
-    </div>
+    </div>--%>
 
     <script type="text/template" id="newHouseListTpl">
 

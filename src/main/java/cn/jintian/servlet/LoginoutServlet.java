@@ -11,7 +11,9 @@ public class LoginoutServlet extends HttpServlet {
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		//1.销毁session
 		request.getSession().invalidate();
+		//2.跳转到主页
 		response.sendRedirect("IndexServlet");
 	}
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
