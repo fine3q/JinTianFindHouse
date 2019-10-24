@@ -6,5 +6,6 @@ import cn.jintian.pojo.Old_H;
 
 public interface IIndexOldHourseDao {
 	List<Old_H> getOldHourse(int index,int itemsPerPage);
+	List<Old_H> getOldHourseImg(int index, int itemsPerPage);
 	int getOldHourseCount();
 }
