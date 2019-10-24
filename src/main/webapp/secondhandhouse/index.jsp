@@ -1107,10 +1107,11 @@
                         "data-click-evtid=\"11178\" data-click-event=\"SearchClick\""+
                         "data-action='source_type=PC首页和列表页搜索&fb_query_id=227459267375452160&type=30201&housedel_id=19010411410100107743&resblock_id=1211045113868&click_position=0&fb_expo_id=227459267417395200&vr=1&service_commitment=1&e_plan='"+
                         "data-view-evtid=\"11435\" data-view-event=\"ItemExpo\">"+
-                        "<img class=\"lj-lazy\" src=\""+json[i].old_h_img+
+                        "<img class=\"lj-lazy\" src=\""+json[i].old_h_img+"\""+
+                            //hahaha
                         "data-original=\"#\""+
                         "alt=\"----\" title=\""+json[i].communityName+">"+
-                        "<img src=\""+json[i].old_h_img+"\" class=\"vr_logo\">"+
+                        "<img class='vr_logo' src='" +json[i].old_h_img+ " '> "+
                         "</a>"+
                         "<div class=\"info clear\">"+
                         "<div class=\"title\">"+
