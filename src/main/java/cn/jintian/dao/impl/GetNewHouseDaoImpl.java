@@ -1,16 +1,16 @@
 package cn.jintian.dao.impl;
 
+import cn.jintian.dao.BaseDao;
+import cn.jintian.dao.IIndexgetNewHouseDao;
+import cn.jintian.pojo.New_h;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.jintian.dao.BaseDao;
-import cn.jintian.dao.IIndexgetNewHouseDao;
-import cn.jintian.pojo.New_h;
-
-public class GetNewHouseDaoImpl implements IIndexgetNewHouseDao{
+public class GetNewHouseDaoImpl implements IIndexgetNewHouseDao {
 	@Override
 	public int getCount() {
 		ResultSet rs= null;
