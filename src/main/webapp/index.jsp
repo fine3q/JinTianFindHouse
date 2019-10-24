@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+    <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%
 String path = request.getContextPath();
@@ -190,7 +190,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                         <li class="CLICKDATA" >
                         <a href="IndexOldHouseServlet">二手房</a>
                         </li>
-                        <li class="CLICKDATA" data-click-evtid="20590" data-click-event="WebClick" data-action='click_name=新房&click_location=1'><a href="IndexNewHouseServlet">新房</a></li>
+                        <li class="CLICKDATA" data-click-evtid="20590" data-click-event="WebClick" data-action='click_name=新房&click_location=1'><a href="loupan/index.jsp">新房</a></li>
                         <li class="CLICKDATA" data-click-evtid="20590" data-click-event="WebClick" data-action='click_name=租房&click_location=2'><a class="" href="renthouse/index.html">租房</a></li>
                         <li class="hover CLICKDATA" data-click-evtid="20590" data-click-event="WebClick" data-action='click_name=我是业主&click_location=8'><a class="" href="javascript:alert('敬请期待')">我是业主</a>
                             <!-- <div class="nav-list">
@@ -210,9 +210,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                         		<a href="FollowHouseServlet" rel="nofollow"><span>${user.u_phonenumber}</span></a>
 							<span class="welcome"><a class="reg" href="LoginoutServlet" target="_self">退出</a></span>
                         	</c:if>
-							
-							
-							
 							<!-- 用户未登录 -->
 							<c:if test="${empty user }">
 								<span class="welcome">
