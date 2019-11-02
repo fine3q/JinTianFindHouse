@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import cn.jintian.service.impl.CollectHouseServiceImpl;
 import com.alibaba.fastjson.JSONObject;
 
 import cn.jintian.pojo.Users;
@@ -16,8 +17,11 @@ import cn.jintian.util.OldHousePage;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import sun.misc.Request;
+
+
 /**
- * 
+ *
  * @author Sexy Six
  *
  */
@@ -26,14 +30,18 @@ public class FollowHouseServlet extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
-		//1.接收参数
+		//1.鎺ユ敹鍙傛暟
 		String indexTmp = request.getParameter("index");
-		//2.处理参数
+
+		String old_h_id = request.getParameter("old_h_id");
+		//System.out.println(old_h_id + "555588");
+
+		//2.澶勭悊鍙傛暟
 		int index = 1;
 		if (indexTmp != null && indexTmp.length() > 0) {
 			index = Integer.parseInt(indexTmp);
 		}
-		//3.调用Service
+		//3.璋冪敤Service
 
 		FollowHouseServiceImpl fhsi = new FollowHouseServiceImpl();
 		Users u = (Users) request.getSession().getAttribute("user");
@@ -41,9 +49,19 @@ public class FollowHouseServlet extends HttpServlet {
 			return;
 		}
 		Integer uId = u.getU_id();
-		System.out.println(uId);
+		int a = uId.intValue();
+		if(a != 0 && old_h_id != null){
+			//System.out.println("12345678");
+			CollectHouseServiceImpl collectHouseService = new CollectHouseServiceImpl();
+			//System.out.println("23456789");
+			String result = collectHouseService.setUserLike(uId, old_h_id);
+			//System.out.println(result + "77777777777777");
+			//System.out.println(old_h_id + "555555555555555");
+			//System.out.println(uId + "66666666666666666666");
+		}
+
 		OldHousePage oldHoursePage = fhsi.getOldHourse(index, 2, uId.toString());
-		//4.返回json
+		//4.杩斿洖json
 		writeValue(oldHoursePage,response);
 		/*request.setAttribute("oldHoursePage", oldHoursePage);
 		request.getRequestDispatcher("favorHouse/index.jsp").forward(request,response);*/
@@ -53,7 +71,7 @@ public class FollowHouseServlet extends HttpServlet {
 		doGet(request, response);
 	}
 	/**
-	 * 传入对象序列化为json,并写回客户端
+	 * 浼犲叆瀵硅薄搴忓垪鍖栦负json,骞跺啓鍥炲鎴风
 	 * @param obj
 	 */
 	public void writeValue(Object obj, HttpServletResponse response) throws IOException {
@@ -63,12 +81,13 @@ public class FollowHouseServlet extends HttpServlet {
 	}
 
 	/**
-	 * 将传入的对象序列化为json,返回
+	 * 灏嗕紶鍏ョ殑瀵硅薄搴忓垪鍖栦负json,杩斿洖
 	 * @return
 	 */
 	public String writeValueAsString(Object obj) throws JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
 		return mapper.writeValueAsString(obj);
 	}
+
 
 }

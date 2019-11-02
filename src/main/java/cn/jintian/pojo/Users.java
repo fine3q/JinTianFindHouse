@@ -1,7 +1,7 @@
 package cn.jintian.pojo;
 /**
- * 
- * @author ÕÅÈóÏÍ
+ *
+ * @author ??????
  *
  */
 public class Users {
@@ -12,6 +12,16 @@ public class Users {
 	private Integer u_community;
 	private String u_phonenumber;
 	private Integer status;
+	private Integer h_liketype;
+
+	public Integer getH_liketype() {
+		return h_liketype;
+	}
+
+	public void setH_liketype(Integer h_liketype) {
+		this.h_liketype = h_liketype;
+	}
+
 	public Integer getStatus() {
 		return status;
 	}
@@ -54,7 +64,7 @@ public class Users {
 	public void setU_community(Integer u_community) {
 		this.u_community = u_community;
 	}
-	
-	
-	
+
+
+
 }
